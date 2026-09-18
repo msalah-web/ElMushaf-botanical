@@ -1,0 +1,4 @@
+<resources>
+    <!-- Set the published download URL before release. -->
+    <string name="app_share_url" translatable="false"></string>
+</resources>

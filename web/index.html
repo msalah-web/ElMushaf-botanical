@@ -4,61 +4,189 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="theme-color" content="#FAF7EF" />
   <title>القرآن الكريم</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Reem+Kufi:wght@500;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css" />
+  <style>
+    :root {
+      --green: #143f30;
+      --gold: #b38c46;
+      --cream: #faf7ef;
+      --sage: #9aab94;
+    }
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      min-height: 100%;
+      background: var(--cream);
+      color: var(--green);
+      font-family: "Geeza Pro", "SF Arabic", "Noto Naskh Arabic", "Times New Roman", serif;
+    }
+    body { min-height: 100dvh; }
+    #app {
+      width: min(430px, 100%);
+      margin: 0 auto;
+      min-height: 100dvh;
+      padding: max(16px, env(safe-area-inset-top)) 16px max(24px, env(safe-area-inset-bottom));
+    }
+    h1 {
+      margin: 10px 0 18px;
+      text-align: center;
+      color: var(--gold);
+      font-size: 36px;
+      font-weight: 700;
+    }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    button.tile, button.row, button.back {
+      font-family: inherit;
+      color: var(--green);
+      cursor: pointer;
+    }
+    button.tile {
+      appearance: none;
+      border: 1px solid var(--sage);
+      border-radius: 18px;
+      background: #fffdf8;
+      min-height: 108px;
+      padding: 14px 8px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-size: 17px;
+      font-weight: 700;
+    }
+    button.tile:active, button.row:active, button.back:active { transform: scale(0.98); }
+    .mark {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--green);
+      color: #e4c784;
+      display: grid;
+      place-items: center;
+      font-size: 16px;
+    }
+    .top {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    button.back {
+      appearance: none;
+      border: 1px solid var(--sage);
+      background: #fffdf8;
+      border-radius: 12px;
+      padding: 8px 12px;
+      font-size: 16px;
+      font-weight: 700;
+    }
+    .top h2 { margin: 0; font-size: 22px; color: var(--green); }
+    .page {
+      background: #fff;
+      border: 1px solid rgba(179, 140, 70, 0.35);
+      border-radius: 16px;
+      padding: 22px 16px 28px;
+      line-height: 2.15;
+      font-size: 22px;
+      text-align: center;
+    }
+    .page .ayah { display: inline; }
+    .num {
+      display: inline-block;
+      margin: 0 4px;
+      color: #0f6b5d;
+      font-size: 14px;
+    }
+    button.row {
+      width: 100%;
+      text-align: right;
+      appearance: none;
+      border: 1px solid var(--sage);
+      background: #fffdf8;
+      border-radius: 14px;
+      padding: 14px 16px;
+      margin-bottom: 8px;
+      font-size: 18px;
+      font-weight: 700;
+    }
+    .note { text-align: center; color: var(--green); font-size: 18px; line-height: 1.7; padding: 24px 8px; }
+    #hint {
+      position: fixed;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: min(320px, calc(100% - 48px));
+      background: var(--cream);
+      border: 1px solid rgba(179, 140, 70, 0.45);
+      border-radius: 18px;
+      padding: 18px 22px;
+      text-align: center;
+      font-size: 20px;
+      font-weight: 700;
+      line-height: 1.5;
+      z-index: 5;
+    }
+  </style>
 </head>
 <body>
-  <main class="shell">
-    <header class="brand">
-      <span class="leaf" aria-hidden="true">❧</span>
-      <h1>القرآن الكريم</h1>
-      <span class="leaf" aria-hidden="true">❧</span>
-    </header>
+  <div id="app"></div>
+  <div id="hint">يُحفظ موضع قراءتك تلقائيًا عند الخروج</div>
+  <script>
+    var surahs = ["الفاتحة","البقرة","آل عمران","النساء","المائدة","الأنعام","الأعراف","الأنفال","التوبة","يونس","هود","يوسف","الرعد","إبراهيم","الحجر","النحل","الإسراء","الكهف","مريم","طه","الأنبياء","الحج","المؤمنون","النور","الفرقان","الشعراء","النمل","القصص","العنكبوت","الروم","لقمان","السجدة","الأحزاب","سبأ","فاطر","يس","الصافات","ص","الزمر","غافر","فصلت","الشورى","الزخرف","الدخان","الجاثية","الأحقاف","محمد","الفتح","الحجرات","ق","الذاريات","الطور","النجم","القمر","الرحمن","الواقعة","الحديد","المجادلة","الحشر","الممتحنة","الصف","الجمعة","المنافقون","التغابن","الطلاق","التحريم","الملك","القلم","الحاقة","المعارج","نوح","الجن","المزمل","المدثر","القيامة","الإنسان","المرسلات","النبأ","النازعات","عبس","التكوير","الانفطار","المطففين","الانشقاق","البروج","الطارق","الأعلى","الغاشية","الفجر","البلد","الشمس","الليل","الضحى","الشرح","التين","العلق","القدر","البينة","الزلزلة","العاديات","القارعة","التكاثر","العصر","الهمزة","الفيل","قريش","الماعون","الكوثر","الكافرون","النصر","المسد","الإخلاص","الفلق","الناس"];
+    var fatiha = ["بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ","الْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ","الرَّحْمَٰنِ الرَّحِيمِ","مَالِكِ يَوْمِ الدِّينِ","إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ","اهْدِنَا الصِّرَاطَ الْمُسْتَقِيمَ","صِرَاطَ الَّذِينَ أَنْعَمْتَ عَلَيْهِمْ غَيْرِ الْمَغْضُوبِ عَلَيْهِمْ وَلَا الضَّالِّينَ"];
+    var screen = "home";
+    var app = document.getElementById("app");
 
-    <section class="grid" aria-label="القائمة">
-      <button type="button" class="tile" data-action="start">
-        <span class="icon" aria-hidden="true">۝</span>
-        <span>بدء القراءة</span>
-      </button>
-      <button type="button" class="tile" data-action="continue">
-        <span class="icon" aria-hidden="true">▤</span>
-        <span>متابعة القراءة</span>
-      </button>
-      <button type="button" class="tile" data-action="index">
-        <span class="icon" aria-hidden="true">☰</span>
-        <span>فهرس السور</span>
-      </button>
-      <button type="button" class="tile" data-action="listen">
-        <span class="icon" aria-hidden="true">▷</span>
-        <span>الاستماع للقرآن</span>
-      </button>
-      <button type="button" class="tile" data-action="qibla">
-        <span class="icon" aria-hidden="true">⌂</span>
-        <span>القبلة</span>
-      </button>
-      <button type="button" class="tile" data-action="umrah">
-        <span class="icon" aria-hidden="true">◈</span>
-        <span>مناسك الحج والعمرة</span>
-      </button>
-      <button type="button" class="tile" data-action="duas">
-        <span class="icon" aria-hidden="true">✧</span>
-        <span>الأدعية</span>
-      </button>
-      <button type="button" class="tile" data-action="adhkar">
-        <span class="icon" aria-hidden="true">☀</span>
-        <span>أذكار الصباح والمساء</span>
-      </button>
-    </section>
-  </main>
-
-  <div id="save-hint" class="save-hint" role="status" aria-live="polite" hidden>
-    يُحفظ موضع قراءتك تلقائيًا عند الخروج
-  </div>
-
-  <script src="app.js"></script>
+    function n(v) {
+      return String(v).replace(/[0-9]/g, function (d) { return "٠١٢٣٤٥٦٧٨٩"[d]; });
+    }
+    function render() {
+      if (screen === "home") {
+        app.innerHTML = '<h1>القرآن الكريم</h1><section class="grid">' +
+          tile("start", "۝", "بدء القراءة") +
+          tile("read", "▤", "متابعة القراءة") +
+          tile("index", "☰", "فهرس السور") +
+          tile("listen", "▷", "الاستماع للقرآن") +
+          tile("qibla", "⌂", "القبلة") +
+          tile("umrah", "◈", "مناسك الحج والعمرة") +
+          tile("duas", "✧", "الأدعية") +
+          tile("adhkar", "☀", "أذكار الصباح والمساء") +
+          "</section>";
+      } else if (screen === "read" || screen === "start") {
+        app.innerHTML = head("سورة الفاتحة") + '<article class="page">' +
+          fatiha.map(function (a, i) { return '<span class="ayah">' + a + ' <span class="num">﴿' + n(i + 1) + '﴾</span></span> '; }).join("") +
+          "</article>";
+      } else if (screen === "index") {
+        app.innerHTML = head("فهرس السور") + surahs.map(function (name, i) {
+          return '<button class="row" data-go="read">' + n(i + 1) + " — " + name + "</button>";
+        }).join("");
+      } else if (screen === "listen") {
+        app.innerHTML = head("الاستماع للقرآن") + '<p class="note">اختر القارئ والسورة من التطبيق. هذه معاينة للتجربة على الآيفون.</p>';
+      } else if (screen === "qibla") {
+        app.innerHTML = head("القبلة") + '<p class="note">اتجاه القبلة يظهر في التطبيق باستخدام موقع الهاتف.</p>';
+      } else if (screen === "umrah") {
+        app.innerHTML = head("مناسك الحج والعمرة") + '<p class="note">خطوات المناسك والأدعية موجودة داخل التطبيق.</p>';
+      } else if (screen === "duas") {
+        app.innerHTML = head("الأدعية") + '<p class="note">اللهم اغفر لنا وارحمنا وعافنا واعف عنا.</p>';
+      } else if (screen === "adhkar") {
+        app.innerHTML = head("أذكار الصباح والمساء") + '<p class="note">أصبحنا وأصبح الملك لله، والحمد لله.</p>';
+      }
+      Array.prototype.forEach.call(app.querySelectorAll("[data-go]"), function (el) {
+        el.addEventListener("click", function () { screen = el.getAttribute("data-go"); render(); });
+      });
+    }
+    function tile(id, mark, label) {
+      return '<button class="tile" data-go="' + id + '"><span class="mark">' + mark + "</span><span>" + label + "</span></button>";
+    }
+    function head(title) {
+      return '<div class="top"><button class="back" data-go="home">رجوع</button><h2>' + title + "</h2></div>";
+    }
+    render();
+    setTimeout(function () {
+      var hint = document.getElementById("hint");
+      if (hint) hint.remove();
+    }, 5000);
+  </script>
 </body>
 </html>

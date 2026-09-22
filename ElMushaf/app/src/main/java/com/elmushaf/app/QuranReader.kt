@@ -331,7 +331,8 @@ fun QuranReaderScreen(surahNumber: Int, onBack: () -> Unit, initialPage: Int? = 
                         .testTag("auto-save-hint"),
                     shape = RoundedCornerShape(18.dp),
                     color = MushafCream,
-                    shadowElevation = 6.dp,
+                    shadowElevation = 0.dp,
+                    tonalElevation = 0.dp,
                     border = androidx.compose.foundation.BorderStroke(1.dp, MushafGold.copy(alpha = .45f))
                 ) {
                     Text(

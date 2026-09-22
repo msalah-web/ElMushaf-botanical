@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="theme-color" content="#FAF7EF" />
+  <title>القرآن الكريم</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Reem+Kufi:wght@500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="shell">
+    <header class="brand">
+      <span class="leaf" aria-hidden="true">❧</span>
+      <h1>القرآن الكريم</h1>
+      <span class="leaf" aria-hidden="true">❧</span>
+    </header>
+
+    <section class="grid" aria-label="القائمة">
+      <button type="button" class="tile" data-action="start">
+        <span class="icon" aria-hidden="true">۝</span>
+        <span>بدء القراءة</span>
+      </button>
+      <button type="button" class="tile" data-action="continue">
+        <span class="icon" aria-hidden="true">▤</span>
+        <span>متابعة القراءة</span>
+      </button>
+      <button type="button" class="tile" data-action="index">
+        <span class="icon" aria-hidden="true">☰</span>
+        <span>فهرس السور</span>
+      </button>
+      <button type="button" class="tile" data-action="listen">
+        <span class="icon" aria-hidden="true">▷</span>
+        <span>الاستماع للقرآن</span>
+      </button>
+      <button type="button" class="tile" data-action="qibla">
+        <span class="icon" aria-hidden="true">⌂</span>
+        <span>القبلة</span>
+      </button>
+      <button type="button" class="tile" data-action="umrah">
+        <span class="icon" aria-hidden="true">◈</span>
+        <span>مناسك الحج والعمرة</span>
+      </button>
+      <button type="button" class="tile" data-action="duas">
+        <span class="icon" aria-hidden="true">✧</span>
+        <span>الأدعية</span>
+      </button>
+      <button type="button" class="tile" data-action="adhkar">
+        <span class="icon" aria-hidden="true">☀</span>
+        <span>أذكار الصباح والمساء</span>
+      </button>
+    </section>
+  </main>
+
+  <div id="save-hint" class="save-hint" role="status" aria-live="polite" hidden>
+    يُحفظ موضع قراءتك تلقائيًا عند الخروج
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

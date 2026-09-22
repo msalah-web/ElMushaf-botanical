@@ -27,6 +27,7 @@ import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDirection
 import androidx.compose.ui.unit.LayoutDirection
@@ -287,8 +288,13 @@ fun QuranReaderScreen(surahNumber: Int, onBack: () -> Unit, initialPage: Int? = 
     fun saveFont() { preferences.edit().putFloat("reader_font_fraction", fontFraction).apply() }
     var controls by remember { mutableStateOf(false) }
     var tafsirPage by remember { mutableStateOf(0) }
+    var saveHintVisible by remember { mutableStateOf(true) }
     LaunchedEffect(pager) { snapshotFlow { pager.settledPage }.collect { preferences.edit().putInt("last_page", it + 1).apply(); controls = false } }
     LaunchedEffect(controls) { if (controls) { kotlinx.coroutines.delay(4000); controls = false } }
+    LaunchedEffect(Unit) {
+        kotlinx.coroutines.delay(5000)
+        saveHintVisible = false
+    }
     BackHandler { if (tafsirPage != 0) tafsirPage = 0 else if (controls) controls = false else onBack() }
     CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
         Box(Modifier.fillMaxSize().background(Color.White).safeDrawingPadding()) {
@@ -315,6 +321,29 @@ fun QuranReaderScreen(surahNumber: Int, onBack: () -> Unit, initialPage: Int? = 
                     TextButton(onClick = { changeFont(fontFraction - .05f); saveFont() }, enabled = fontFraction > .7f) { Text("أ−") }
                     TextButton(onClick = { changeFont(fontFraction + .05f); saveFont() }, enabled = fontFraction < 1.35f) { Text("أ+") }
                     TextButton(onClick = { controls = false }) { Text("إخفاء") }
+                }
+            }
+            if (saveHintVisible) {
+                Surface(
+                    modifier = Modifier
+                        .align(Alignment.Center)
+                        .padding(horizontal = 28.dp)
+                        .testTag("auto-save-hint"),
+                    shape = RoundedCornerShape(18.dp),
+                    color = MushafCream,
+                    shadowElevation = 0.dp,
+                    tonalElevation = 0.dp,
+                    border = androidx.compose.foundation.BorderStroke(1.dp, MushafGold.copy(alpha = .45f))
+                ) {
+                    Text(
+                        "تُحفظ الصفحة تلقائياً",
+                        modifier = Modifier.padding(horizontal = 28.dp, vertical = 18.dp),
+                        color = MushafGreen,
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Bold,
+                        textAlign = TextAlign.Center,
+                        lineHeight = 28.sp
+                    )
                 }
             }
         }
